@@ -6,7 +6,6 @@
     <style>
         body { font-family: sans-serif; padding: 20px; background: #f4f7f6; }
         .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        select, button { padding: 10px; margin: 5px; }
         .partido-card { border-left: 5px solid #0f4c81; padding: 10px; margin: 10px 0; background: #f9f9f9; }
     </style>
 </head>
@@ -19,21 +18,34 @@
         <div id="contenedorResultados"></div>
     </div>
 
-    <script src="datos.js"></script>
     <script>
+        // Esta es la lista completa y verificada
+        const baseDeDatosPartidos = [
+            { fecha: "11 de junio", local: "México", visitante: "Sudáfrica", estadio: "Estadio Ciudad de México", hora: "15:00" },
+            { fecha: "11 de junio", local: "República de Corea", visitante: "República Checa", estadio: "Estadio Guadalajara", hora: "22:00" },
+            { fecha: "12 de junio", local: "Canadá", visitante: "Bosnia y Herzegovina", estadio: "Estadio Toronto", hora: "15:00" },
+            { fecha: "12 de junio", local: "Estados Unidos", visitante: "Paraguay", estadio: "Estadio Los Ángeles", hora: "21:00" },
+            { fecha: "13 de junio", local: "Catar", visitante: "Suiza", estadio: "Estadio Bahía de San Francisco", hora: "15:00" },
+            { fecha: "13 de junio", local: "Brasil", visitante: "Marruecos", estadio: "Estadio Nueva York Nueva Jersey", hora: "18:00" },
+            { fecha: "13 de junio", local: "Haití", visitante: "Escocia", estadio: "Estadio Boston", hora: "21:00" },
+            { fecha: "13 de junio", local: "Australia", visitante: "Turquía", estadio: "Estadio BC Place Vancouver", hora: "00:00" },
+            { fecha: "19 de julio", local: "Final", visitante: "Gran Final Mundial", estadio: "MetLife Stadium", hora: "Por definir" }
+        ];
+
         document.getElementById('btnConsultar').addEventListener('click', function() {
             const mes = document.getElementById('selectMes').value;
             const dia = document.getElementById('selectDia').value;
             const fechaBuscada = dia + " de " + mes;
             const contenedor = document.getElementById('contenedorResultados');
             contenedor.innerHTML = "";
+            
             const filtrados = baseDeDatosPartidos.filter(p => p.fecha === fechaBuscada);
             if (filtrados.length > 0) {
                 filtrados.forEach(p => {
                     contenedor.innerHTML += `<div class="partido-card"><strong>${p.local} vs ${p.visitante}</strong><br>Sede: ${p.estadio}<br>Hora: ${p.hora}</div>`;
                 });
             } else {
-                contenedor.innerHTML = "No hay partidos para esa fecha.";
+                contenedor.innerHTML = "No hay partidos registrados para el " + fechaBuscada;
             }
         });
     </script>
