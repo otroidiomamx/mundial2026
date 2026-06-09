@@ -14,13 +14,16 @@
 <body>
     <div class="container">
         <select id="selectMes"><option value="junio">Junio</option><option value="julio">Julio</option></select>
-        <select id="selectDia"><script>for(let i=1; i<=31; i++) document.write(`<option value="${i}">${i}</option>`);</script></select>
+        <select id="selectDia">
+            <script>for(let i=1; i<=31; i++) document.write(`<option value="${i}">${i}</option>`);</script>
+        </select>
         <button id="btnConsultar">Consultar</button>
         <div id="contenedorResultados"></div>
     </div>
 
     <script>
         const baseDeDatosPartidos = [
+            // JUNIO - FASE DE GRUPOS
             { fecha: "11 de junio", local: "México", visitante: "Sudáfrica", estadio: "Estadio Ciudad de México", hora: "15:00" },
             { fecha: "11 de junio", local: "República de Corea", visitante: "República Checa", estadio: "Estadio Guadalajara", hora: "22:00" },
             { fecha: "12 de junio", local: "Canadá", visitante: "Bosnia y Herzegovina", estadio: "Estadio Toronto", hora: "15:00" },
@@ -93,6 +96,8 @@
             { fecha: "27 de junio", local: "RD Congo", visitante: "Uzbekistán", estadio: "Estadio Atlanta", hora: "19:30" },
             { fecha: "27 de junio", local: "Argelia", visitante: "Austria", estadio: "Estadio Kansas City", hora: "22:00" },
             { fecha: "27 de junio", local: "Jordania", visitante: "Argentina", estadio: "Estadio Dallas", hora: "22:00" },
+            
+            // FASE DE ELIMINACIÓN
             { fecha: "28 de junio", local: "Partido 73", visitante: "2º Grupo A vs 2º Grupo B", estadio: "Estadio Los Ángeles", hora: "Por definir" },
             { fecha: "29 de junio", local: "Partido 74", visitante: "1º Grupo E vs 3º Grupo A/B/C/D/F", estadio: "Estadio Boston", hora: "Por definir" },
             { fecha: "29 de junio", local: "Partido 75", visitante: "1º Grupo F vs 2º Grupo C", estadio: "Estadio Monterrey", hora: "Por definir" },
@@ -133,13 +138,12 @@
                 const dia = document.getElementById('selectDia').value;
                 const fechaBuscada = dia + " de " + mes;
                 const contenedor = document.getElementById('contenedorResultados');
-                
                 contenedor.innerHTML = "";
                 const filtrados = baseDeDatosPartidos.filter(p => p.fecha === fechaBuscada);
                 
                 if (filtrados.length > 0) {
                     filtrados.forEach(p => {
-                        contenedor.innerHTML += `<div class="partido-card"><strong>${p.local} vs ${p.visitante}</strong><br>Sede: ${p.estadio} | Hora: ${p.hora}</div>`;
+                        contenedor.innerHTML += `<div class="partido-card"><strong>${p.local} vs ${p.visitante}</strong><br>Sede: ${p.estadio} Hora: ${p.hora}</div>`;
                     });
                 } else {
                     contenedor.innerHTML = "<div class='partido-card'>No hay partidos para el " + fechaBuscada + "</div>";
