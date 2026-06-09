@@ -4,20 +4,18 @@
     <meta charset="UTF-8">
     <title>Agenda Mundial 2026</title>
     <style>
-        body { font-family: sans-serif; padding: 0; background: white; margin: 0; }
-        .container { max-width: 600px; margin: auto; padding: 10px; }
-        select { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
-        #btnConsultar { padding: 8px 15px; background: #2ecc71; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        .partido-card { border-left: 4px solid #0f4c81; padding: 8px; margin: 8px 0; background: #f9f9f9; font-size: 14px; }
+        body { font-family: sans-serif; padding: 5px; margin: 0; background: transparent; }
+        select { padding: 5px; border: 1px solid #ccc; border-radius: 4px; }
+        #btnConsultar { padding: 5px 10px; background: #2ecc71; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        /* Resultado limpio, sin cajas ni bordes */
+        .partido-info { margin: 10px 0; font-size: 14px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <select id="selectMes"><option value="junio">Junio</option><option value="julio">Julio</option></select>
-        <select id="selectDia"><script>for(let i=1; i<=31; i++) document.write(`<option value="${i}">${i}</option>`);</script></select>
-        <button id="btnConsultar">Consultar</button>
-        <div id="contenedorResultados"></div>
-    </div>
+    <select id="selectMes"><option value="junio">Junio</option><option value="julio">Julio</option></select>
+    <select id="selectDia"><script>for(let i=1; i<=31; i++) document.write(`<option value="${i}">${i}</option>`);</script></select>
+    <button id="btnConsultar">Consultar</button>
+    <div id="contenedorResultados"></div>
 
     <script>
         const baseDeDatosPartidos = [
@@ -33,34 +31,53 @@
             { fecha: "14 de junio", local: "Países Bajos", visitante: "Japón", estadio: "Estadio Dallas", hora: "16:00" },
             { fecha: "14 de junio", local: "Costa de Marfil", visitante: "Ecuador", estadio: "Estadio Filadelfia", hora: "19:00" },
             { fecha: "14 de junio", local: "Suecia", visitante: "Túnez", estadio: "Estadio Monterrey", hora: "22:00" },
-            { fecha: "27 de junio", local: "Panamá", visitante: "Inglaterra", estadio: "Estadio Nueva York Nueva Jersey", hora: "17:00" },
-            { fecha: "27 de junio", local: "Croacia", visitante: "Ghana", estadio: "Estadio Filadelfia", hora: "17:00" },
-            { fecha: "27 de junio", local: "Colombia", visitante: "Portugal", estadio: "Estadio Miami", hora: "19:30" },
-            { fecha: "27 de junio", local: "RD Congo", visitante: "Uzbekistán", estadio: "Estadio Atlanta", hora: "19:30" },
-            { fecha: "27 de junio", local: "Argelia", visitante: "Austria", estadio: "Estadio Kansas City", hora: "22:00" },
-            { fecha: "27 de junio", local: "Jordania", visitante: "Argentina", estadio: "Estadio Dallas", hora: "22:00" },
-            { fecha: "19 de julio", local: "Final", visitante: "Gran Final", estadio: "MetLife Stadium", hora: "Por definir" }
-        ];
-
-        document.addEventListener("DOMContentLoaded", function() {
-            document.getElementById('btnConsultar').addEventListener('click', function() {
-                const mes = document.getElementById('selectMes').value;
-                const dia = document.getElementById('selectDia').value;
-                const fechaBuscada = dia + " de " + mes;
-                const contenedor = document.getElementById('contenedorResultados');
-                
-                contenedor.innerHTML = "";
-                const filtrados = baseDeDatosPartidos.filter(p => p.fecha === fechaBuscada);
-                
-                if (filtrados.length > 0) {
-                    filtrados.forEach(p => {
-                        contenedor.innerHTML += `<div class="partido-card"><strong>${p.local} vs ${p.visitante}</strong><br>Sede: ${p.estadio}<br>Hora: ${p.hora}</div>`;
-                    });
-                } else {
-                    contenedor.innerHTML = "No hay partidos para el " + fechaBuscada;
-                }
-            });
-        });
-    </script>
-</body>
-</html>
+            { fecha: "15 de junio", local: "España", visitante: "Cabo Verde", estadio: "Estadio Atlanta", hora: "12:00" },
+            { fecha: "15 de junio", local: "Bélgica", visitante: "Egipto", estadio: "Estadio Seattle", hora: "15:00" },
+            { fecha: "15 de junio", local: "Arabia Saudí", visitante: "Uruguay", estadio: "Estadio Miami", hora: "18:00" },
+            { fecha: "15 de junio", local: "RI de Irán", visitante: "Nueva Zelanda", estadio: "Estadio Los Ángeles", hora: "21:00" },
+            { fecha: "16 de junio", local: "Francia", visitante: "Senegal", estadio: "Estadio Nueva York Nueva Jersey", hora: "15:00" },
+            { fecha: "16 de junio", local: "Irak", visitante: "Noruega", estadio: "Estadio Boston", hora: "18:00" },
+            { fecha: "16 de junio", local: "Argentina", visitante: "Argelia", estadio: "Estadio Kansas City", hora: "21:00" },
+            { fecha: "16 de junio", local: "Austria", visitante: "Jordania", estadio: "Estadio Bahía de San Francisco", hora: "00:00" },
+            { fecha: "17 de junio", local: "Portugal", visitante: "RD Congo", estadio: "Estadio Houston", hora: "13:00" },
+            { fecha: "17 de junio", local: "Inglaterra", visitante: "Croacia", estadio: "Estadio Dallas", hora: "16:00" },
+            { fecha: "17 de junio", local: "Ghana", visitante: "Panamá", estadio: "Estadio Toronto", hora: "19:00" },
+            { fecha: "17 de junio", local: "Uzbekistán", visitante: "Colombia", estadio: "Estadio Ciudad de México", hora: "22:00" },
+            { fecha: "18 de junio", local: "República Checa", visitante: "Sudáfrica", estadio: "Estadio Atlanta", hora: "12:00" },
+            { fecha: "18 de junio", local: "Suiza", visitante: "Bosnia y Herzegovina", estadio: "Estadio Los Ángeles", hora: "15:00" },
+            { fecha: "18 de junio", local: "Canadá", visitante: "Catar", estadio: "Estadio BC Place Vancouver", hora: "18:00" },
+            { fecha: "18 de junio", local: "México", visitante: "República de Corea", estadio: "Estadio Guadalajara", hora: "21:00" },
+            { fecha: "19 de junio", local: "Estados Unidos", visitante: "Australia", estadio: "Estadio Seattle", hora: "15:00" },
+            { fecha: "19 de junio", local: "Escocia", visitante: "Marruecos", estadio: "Estadio Boston", hora: "18:00" },
+            { fecha: "19 de junio", local: "Brasil", visitante: "Haití", estadio: "Estadio Filadelfia", hora: "21:00" },
+            { fecha: "19 de junio", local: "Turquía", visitante: "Paraguay", estadio: "Estadio Bahía de San Francisco", hora: "00:00" },
+            { fecha: "20 de junio", local: "Países Bajos", visitante: "Suecia", estadio: "Estadio Houston", hora: "13:00" },
+            { fecha: "20 de junio", local: "Alemania", visitante: "Costa de Marfil", estadio: "Estadio Toronto", hora: "16:00" },
+            { fecha: "20 de junio", local: "Ecuador", visitante: "Curazao", estadio: "Estadio Kansas City", hora: "22:00" },
+            { fecha: "20 de junio", local: "Túnez", visitante: "Japón", estadio: "Estadio Monterrey", hora: "00:00" },
+            { fecha: "21 de junio", local: "España", visitante: "Arabia Saudí", estadio: "Estadio Atlanta", hora: "12:00" },
+            { fecha: "21 de junio", local: "Bélgica", visitante: "Irán", estadio: "Estadio Los Ángeles", hora: "15:00" },
+            { fecha: "21 de junio", local: "Uruguay", visitante: "Cabo Verde", estadio: "Estadio Miami", hora: "18:00" },
+            { fecha: "21 de junio", local: "Nueva Zelanda", visitante: "Egipto", estadio: "Estadio BC Place Vancouver", hora: "21:00" },
+            { fecha: "22 de junio", local: "Argentina", visitante: "Austria", estadio: "Estadio Dallas", hora: "13:00" },
+            { fecha: "22 de junio", local: "Francia", visitante: "Irak", estadio: "Estadio Filadelfia", hora: "17:00" },
+            { fecha: "22 de junio", local: "Noruega", visitante: "Senegal", estadio: "Estadio Nueva York Nueva Jersey", hora: "20:00" },
+            { fecha: "22 de junio", local: "Jordania", visitante: "Argelia", estadio: "Estadio Bahía de San Francisco", hora: "23:00" },
+            { fecha: "23 de junio", local: "Portugal", visitante: "Uzbekistán", estadio: "Estadio Houston", hora: "13:00" },
+            { fecha: "23 de junio", local: "Inglaterra", visitante: "Ghana", estadio: "Estadio Boston", hora: "16:00" },
+            { fecha: "23 de junio", local: "Panamá", visitante: "Croacia", estadio: "Estadio Toronto", hora: "19:00" },
+            { fecha: "23 de junio", local: "Colombia", visitante: "RD Congo", estadio: "Estadio Guadalajara", hora: "22:00" },
+            { fecha: "24 de junio", local: "Suiza", visitante: "Canadá", estadio: "Estadio BC Place Vancouver", hora: "15:00" },
+            { fecha: "24 de junio", local: "Bosnia y Herzegovina", visitante: "Catar", estadio: "Estadio Seattle", hora: "15:00" },
+            { fecha: "24 de junio", local: "Escocia", visitante: "Brasil", estadio: "Estadio Miami", hora: "18:00" },
+            { fecha: "24 de junio", local: "Marruecos", visitante: "Haití", estadio: "Estadio Atlanta", hora: "18:00" },
+            { fecha: "24 de junio", local: "República Checa", visitante: "México", estadio: "Estadio Ciudad de México", hora: "21:00" },
+            { fecha: "24 de junio", local: "Sudáfrica", visitante: "República de Corea", estadio: "Estadio Monterrey", hora: "21:00" },
+            { fecha: "25 de junio", local: "Curazao", visitante: "Costa de Marfil", estadio: "Estadio Filadelfia", hora: "16:00" },
+            { fecha: "25 de junio", local: "Ecuador", visitante: "Alemania", estadio: "Estadio Nueva York Nueva Jersey", hora: "16:00" },
+            { fecha: "25 de junio", local: "Japón", visitante: "Suecia", estadio: "Estadio Dallas", hora: "19:00" },
+            { fecha: "25 de junio", local: "Túnez", visitante: "Países Bajos", estadio: "Estadio Kansas City", hora: "19:00" },
+            { fecha: "25 de junio", local: "Turquía", visitante: "Estados Unidos", estadio: "Estadio Los Ángeles", hora: "22:00" },
+            { fecha: "25 de junio", local: "Paraguay", visitante: "Australia", estadio: "Estadio Bahía de San Francisco", hora: "22:00" },
+            { fecha: "26 de junio", local: "Noruega", visitante: "Francia", estadio: "Estadio Boston", hora: "15:00" },
+            { fecha: "26 de junio", local: "Senegal", visitante: "Irak", estadio: "Estadio Toronto
