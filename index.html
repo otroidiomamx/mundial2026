@@ -12,29 +12,24 @@
 </head>
 <body>
     <div class="container">
-        <h1>Agenda Mundial 2026</h1>
+        <h1>Mundial 2026</h1>
         <select id="selectMes"><option value="junio">Junio</option><option value="julio">Julio</option></select>
         <select id="selectDia"><script>for(let i=1; i<=31; i++) document.write(`<option value="${i}">${i}</option>`);</script></select>
-        <button id="btnConsultar">Consultar</button>
+        <button onclick="buscarPartidos()" class="btn-buscar">Consultar</button>
         <div id="contenedorResultados"></div>
     </div>
 
     <script>
-        // 1. BASE DE DATOS
+        // 1. TU BASE DE DATOS
         const baseDeDatosPartidos = [
             { fecha: "11 de junio", local: "México", visitante: "Sudáfrica", estadio: "Estadio Ciudad de México", hora: "15:00" },
-            { fecha: "11 de junio", local: "República de Corea", visitante: "República Checa", estadio: "Estadio Guadalajara", hora: "22:00" },
-            { fecha: "12 de junio", local: "Canadá", visitante: "Bosnia y Herzegovina", estadio: "Estadio Toronto", hora: "15:00" },
-            { fecha: "12 de junio", local: "Estados Unidos", visitante: "Paraguay", estadio: "Estadio Los Ángeles", hora: "21:00" },
-            { fecha: "13 de junio", local: "Catar", visitante: "Suiza", estadio: "Estadio Bahía de San Francisco", hora: "15:00" },
-            { fecha: "13 de junio", local: "Brasil", visitante: "Marruecos", estadio: "Estadio Nueva York Nueva Jersey", hora: "18:00" },
-            { fecha: "13 de junio", local: "Haití", visitante: "Escocia", estadio: "Estadio Boston", hora: "21:00" },
-            { fecha: "13 de junio", local: "Australia", visitante: "Turquía", estadio: "Estadio BC Place Vancouver", hora: "00:00" },
+            { fecha: "13 de junio", local: "Brasil", visitante: "Marruecos", estadio: "Estadio Nueva York", hora: "18:00" },
             { fecha: "19 de julio", local: "Final", visitante: "Gran Final", estadio: "MetLife Stadium", hora: "Por definir" }
+            // PUEDES AGREGAR EL RESTO DE TUS PARTIDOS AQUÍ
         ];
 
-        // 2. FUNCIÓN DE BÚSQUEDA (Global para que sea accesible)
-        function buscarPartidos() {
+        // 2. HACEMOS LA FUNCIÓN GLOBAL PARA QUE EL BOTÓN LA ENCUENTRE
+        window.buscarPartidos = function() {
             const mes = document.getElementById('selectMes').value;
             const dia = document.getElementById('selectDia').value;
             const fechaBuscada = dia + " de " + mes;
@@ -50,12 +45,7 @@
             } else {
                 contenedor.innerHTML = "No hay partidos para el " + fechaBuscada;
             }
-        }
-
-        // 3. VINCULACIÓN DEL BOTÓN (Aquí es donde unimos el botón con la función)
-        document.addEventListener("DOMContentLoaded", function() {
-            document.getElementById('btnConsultar').addEventListener('click', buscarPartidos);
-        });
+        };
     </script>
 </body>
 </html>
