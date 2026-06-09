@@ -4,18 +4,21 @@
     <meta charset="UTF-8">
     <title>Agenda Mundial 2026</title>
     <style>
-        body { font-family: sans-serif; padding: 5px; margin: 0; background: transparent; }
-        select { padding: 5px; border: 1px solid #ccc; border-radius: 4px; }
-        #btnConsultar { padding: 5px 10px; background: #2ecc71; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        /* Resultado limpio, sin cajas ni bordes */
-        .partido-info { margin: 10px 0; font-size: 14px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        body { font-family: sans-serif; padding: 10px; background: white; margin: 0; }
+        .container { max-width: 600px; margin: auto; }
+        select { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        #btnConsultar { padding: 8px 15px; background: #2ecc71; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        /* Esta es la clase que tenía la barrita azul, ahora la dejamos limpia */
+        .partido-card { padding: 8px; margin: 8px 0; background: #f9f9f9; font-size: 14px; }
     </style>
 </head>
 <body>
-    <select id="selectMes"><option value="junio">Junio</option><option value="julio">Julio</option></select>
-    <select id="selectDia"><script>for(let i=1; i<=31; i++) document.write(`<option value="${i}">${i}</option>`);</script></select>
-    <button id="btnConsultar">Consultar</button>
-    <div id="contenedorResultados"></div>
+    <div class="container">
+        <select id="selectMes"><option value="junio">Junio</option><option value="julio">Julio</option></select>
+        <select id="selectDia"><script>for(let i=1; i<=31; i++) document.write(`<option value="${i}">${i}</option>`);</script></select>
+        <button id="btnConsultar">Consultar</button>
+        <div id="contenedorResultados"></div>
+    </div>
 
     <script>
         const baseDeDatosPartidos = [
@@ -80,4 +83,39 @@
             { fecha: "25 de junio", local: "Turquía", visitante: "Estados Unidos", estadio: "Estadio Los Ángeles", hora: "22:00" },
             { fecha: "25 de junio", local: "Paraguay", visitante: "Australia", estadio: "Estadio Bahía de San Francisco", hora: "22:00" },
             { fecha: "26 de junio", local: "Noruega", visitante: "Francia", estadio: "Estadio Boston", hora: "15:00" },
-            { fecha: "26 de junio", local: "Senegal", visitante: "Irak", estadio: "Estadio Toronto
+            { fecha: "26 de junio", local: "Senegal", visitante: "Irak", estadio: "Estadio Toronto", hora: "15:00" },
+            { fecha: "26 de junio", local: "Cabo Verde", visitante: "Arabia Saudí", estadio: "Estadio Houston", hora: "20:00" },
+            { fecha: "26 de junio", local: "Uruguay", visitante: "España", estadio: "Estadio Guadalajara", hora: "20:00" },
+            { fecha: "26 de junio", local: "Egipto", visitante: "Irán", estadio: "Estadio Seattle", hora: "23:00" },
+            { fecha: "26 de junio", local: "Nueva Zelanda", visitante: "Bélgica", estadio: "Estadio BC Place Vancouver", hora: "23:00" },
+            { fecha: "27 de junio", local: "Panamá", visitante: "Inglaterra", estadio: "Estadio Nueva York Nueva Jersey", hora: "17:00" },
+            { fecha: "27 de junio", local: "Croacia", visitante: "Ghana", estadio: "Estadio Filadelfia", hora: "17:00" },
+            { fecha: "27 de junio", local: "Colombia", visitante: "Portugal", estadio: "Estadio Miami", hora: "19:30" },
+            { fecha: "27 de junio", local: "RD Congo", visitante: "Uzbekistán", estadio: "Estadio Atlanta", hora: "19:30" },
+            { fecha: "27 de junio", local: "Argelia", visitante: "Austria", estadio: "Estadio Kansas City", hora: "22:00" },
+            { fecha: "27 de junio", local: "Jordania", visitante: "Argentina", estadio: "Estadio Dallas", hora: "22:00" },
+            { fecha: "19 de julio", local: "Final", visitante: "Gran Final", estadio: "MetLife Stadium", hora: "Por definir" }
+        ];
+
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById('btnConsultar').addEventListener('click', function() {
+                const mes = document.getElementById('selectMes').value;
+                const dia = document.getElementById('selectDia').value;
+                const fechaBuscada = dia + " de " + mes;
+                const contenedor = document.getElementById('contenedorResultados');
+                
+                contenedor.innerHTML = "";
+                const filtrados = baseDeDatosPartidos.filter(p => p.fecha === fechaBuscada);
+                
+                if (filtrados.length > 0) {
+                    filtrados.forEach(p => {
+                        contenedor.innerHTML += `<div class="partido-card"><strong>${p.local} vs ${p.visitante}</strong><br>Sede: ${p.estadio} | Hora: ${p.hora}</div>`;
+                    });
+                } else {
+                    contenedor.innerHTML = "<div class='partido-card'>No hay partidos para el " + fechaBuscada + "</div>";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
