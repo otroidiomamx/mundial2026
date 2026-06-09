@@ -2,90 +2,39 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agenda Mundial 2026</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f4f7f6; color: #333; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        h1 { color: #0f4c81; margin-bottom: 5px; text-align: center; }
-        .subtitulo { color: #7f8c8d; margin-bottom: 20px; text-align: center; }
-        .container { background-color: #ffffff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 600px; width: 100%; }
-        .controles-busqueda { display: flex; gap: 15px; margin-bottom: 25px; align-items: center; }
-        .caja-desplegable { flex: 1; display: flex; flex-direction: column; }
-        label { font-size: 0.9em; font-weight: bold; color: #555; margin-bottom: 5px; }
-        select { padding: 12px; font-size: 16px; border: 2px solid #ccc; border-radius: 8px; outline: none; cursor: pointer; background-color: #fff; }
-        button.btn-buscar { padding: 12px 20px; font-size: 16px; background-color: #2ecc71; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 22px; }
-        .partido-card { background: #fff; border-left: 5px solid #0f4c81; padding: 15px; margin-bottom: 15px; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .partido-equipos { font-size: 1.2em; font-weight: bold; color: #2c3e50; margin-bottom: 5px; }
-        .partido-detalles { font-size: 0.9em; color: #7f8c8d; line-height: 1.5; }
-        .no-resultados { color: #e74c3c; text-align: center; font-weight: bold; padding: 20px; background: #fdf0ed; border-radius: 8px; }
+        body { font-family: sans-serif; padding: 20px; background: #f4f7f6; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        select, button { padding: 10px; margin: 5px; }
+        .partido-card { border-left: 5px solid #0f4c81; padding: 10px; margin: 10px 0; background: #f9f9f9; }
     </style>
 </head>
 <body>
-
-    <h1>Mundial 2026</h1>
-    <div class="subtitulo">México - Estados Unidos - Canadá</div>
-    
     <div class="container">
-        <div class="controles-busqueda">
-            <div class="caja-desplegable">
-                <label>Mes:</label>
-                <select id="selectMes">
-                    <option value="junio">Junio</option>
-                    <option value="julio">Julio</option>
-                </select>
-            </div>
-            <div class="caja-desplegable">
-                <label>Día:</label>
-                <select id="selectDia">
-                    <script>
-                        for(let i=1; i<=31; i++) document.write(`<option value="${i}">${i}</option>`);
-                    </script>
-                </select>
-            </div>
-            <button id="btnConsultar" class="btn-buscar">Consultar</button>
-        </div>
-        <div id="contenedorResultados">
-            <p style="text-align: center; color: #888;">Selecciona una fecha para ver la agenda.</p>
-        </div>
+        <h1>Mundial 2026</h1>
+        <select id="selectMes"><option value="junio">Junio</option><option value="julio">Julio</option></select>
+        <select id="selectDia"><script>for(let i=1; i<=31; i++) document.write(`<option value="${i}">${i}</option>`);</script></select>
+        <button id="btnConsultar">Consultar</button>
+        <div id="contenedorResultados"></div>
     </div>
 
+    <script src="datos.js"></script>
     <script>
-        const baseDeDatosPartidos = [
-            { fecha: "11 de junio", local: "México", visitante: "Sudáfrica", estadio: "Estadio Ciudad de México", hora: "15:00" },
-            { fecha: "11 de junio", local: "República de Corea", visitante: "República Checa", estadio: "Estadio Guadalajara", hora: "22:00" },
-            { fecha: "12 de junio", local: "Canadá", visitante: "Bosnia y Herzegovina", estadio: "Estadio Toronto", hora: "15:00" },
-            { fecha: "12 de junio", local: "Estados Unidos", visitante: "Paraguay", estadio: "Estadio Los Ángeles", hora: "21:00" },
-            { fecha: "13 de junio", local: "Catar", visitante: "Suiza", estadio: "Estadio Bahía de San Francisco", hora: "15:00" },
-            { fecha: "13 de junio", local: "Brasil", visitante: "Marruecos", estadio: "Estadio Nueva York Nueva Jersey", hora: "18:00" },
-            { fecha: "13 de junio", local: "Haití", visitante: "Escocia", estadio: "Estadio Boston", hora: "21:00" },
-            { fecha: "13 de junio", local: "Australia", visitante: "Turquía", estadio: "Estadio BC Place Vancouver", hora: "00:00" },
-            { fecha: "27 de junio", local: "Panamá", visitante: "Inglaterra", estadio: "Estadio Nueva York Nueva Jersey", hora: "17:00" },
-            { fecha: "27 de junio", local: "Croacia", visitante: "Ghana", estadio: "Estadio Filadelfia", hora: "17:00" },
-            { fecha: "27 de junio", local: "Colombia", visitante: "Portugal", estadio: "Estadio Miami", hora: "19:30" },
-            { fecha: "27 de junio", local: "RD Congo", visitante: "Uzbekistán", estadio: "Estadio Atlanta", hora: "19:30" },
-            { fecha: "27 de junio", local: "Argelia", visitante: "Austria", estadio: "Estadio Kansas City", hora: "22:00" },
-            { fecha: "27 de junio", local: "Jordania", visitante: "Argentina", estadio: "Estadio Dallas", hora: "22:00" },
-            { fecha: "19 de julio", local: "Ganador Partido 101", visitante: "Ganador Partido 102", estadio: "Estadio Nueva York Nueva Jersey", hora: "Por definir" }
-        ];
-
-        document.addEventListener("DOMContentLoaded", function() {
-            document.getElementById('btnConsultar').addEventListener('click', function() {
-                const mes = document.getElementById('selectMes').value;
-                const dia = document.getElementById('selectDia').value;
-                const fechaBuscada = dia + " de " + mes;
-                const contenedor = document.getElementById('contenedorResultados');
-                contenedor.innerHTML = "";
-
-                const filtrados = baseDeDatosPartidos.filter(p => p.fecha === fechaBuscada);
-
-                if (filtrados.length > 0) {
-                    filtrados.forEach(p => {
-                        contenedor.innerHTML += `<div class="partido-card"><div class="partido-equipos">${p.local} vs ${p.visitante}</div><div class="partido-detalles">Sede: ${p.estadio}<br>Hora: ${p.hora}</div></div>`;
-                    });
-                } else {
-                    contenedor.innerHTML = '<div class="no-resultados">No hay partidos para el ' + fechaBuscada + '.</div>';
-                }
-            });
+        document.getElementById('btnConsultar').addEventListener('click', function() {
+            const mes = document.getElementById('selectMes').value;
+            const dia = document.getElementById('selectDia').value;
+            const fechaBuscada = dia + " de " + mes;
+            const contenedor = document.getElementById('contenedorResultados');
+            contenedor.innerHTML = "";
+            const filtrados = baseDeDatosPartidos.filter(p => p.fecha === fechaBuscada);
+            if (filtrados.length > 0) {
+                filtrados.forEach(p => {
+                    contenedor.innerHTML += `<div class="partido-card"><strong>${p.local} vs ${p.visitante}</strong><br>Sede: ${p.estadio}<br>Hora: ${p.hora}</div>`;
+                });
+            } else {
+                contenedor.innerHTML = "No hay partidos para esa fecha.";
+            }
         });
     </script>
 </body>
