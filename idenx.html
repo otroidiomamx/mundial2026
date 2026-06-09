@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda Mundial 2026</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #0f4c81;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        
+        .subtitulo {
+            color: #7f8c8d;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        /* Diseño de las dos cajitas desplegables y el botón */
+        .controles-busqueda {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            align-items: center;
+        }
+
+        .caja-desplegable {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 0.9em;
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        select {
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+            cursor: pointer;
+            background-color: #fff;
+            transition: border-color 0.3s;
+        }
+
+        select:focus {
+            border-color: #0f4c81;
+        }
+
+        button.btn-buscar {
+            padding: 12px 20px;
+            font-size: 16px;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 22px; /* Alinea el botón con las cajitas */
+            transition: background 0.3s;
+        }
+
+        button.btn-buscar:hover {
+            background-color: #27ae60;
+        }
+
+        /* Tarjetas de los partidos en los resultados */
+        .partido-card {
+            background: #fff;
+            border-left: 5px solid #0f4c81;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .partido-equipos {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .partido-detalles {
+            font-size: 0.9em;
+            color: #7f8c8d;
+            line-height: 1.5;
+        }
+
+        .no-resultados {
+            color: #e74c3c;
+            text-align: center;
+            font-weight: bold;
+            padding: 20px;
+            background: #fdf0ed;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🏆 Mundial 2026</h1>
+    <div class="subtitulo">México • Estados Unidos • Canadá</div>
+    
+    <div class="container">
+        
+        <div class="controles-busqueda">
+            
+            <div class="caja-desplegable">
+                <label for="selectMes">Mes:</label>
+                <select id="selectMes">
+                    <option value="junio">Junio</option>
+                    <option value="julio">Julio</option>
+                </select>
+            </div>
+
+            <div class="caja-desplegable">
+                <label for="selectDia">Día:</label>
+                <select id="selectDia">
+                    <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+                    <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+                    <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+                    <option value="10">10</option><option value="11" selected>11</option><option value="12">12</option>
+                    <option value="13">13</option><option value="14">14</option><option value="15">15</option>
+                    <option value="16">16</option><option value="17">17</option><option value="18">18</option>
+                    <option value="19">19</option><option value="20">20</option><option value="21">21</option>
+                    <option value="22">22</option><option value="23">23</option><option value="24">24</option>
+                    <option value="25">25</option><option value="26">26</option><option value="27">27</option>
+                    <option value="28">28</option><option value="29">29</option><option value="30">30</option>
+                    <option value="31">31</option>
+                </select>
+            </div>
+
+            <button class="btn-buscar" onclick="buscarPartidos()">Consultar</button>
+
+        </div>
+
+        <div id="contenedorResultados">
+            <p style="text-align: center; color: #888;">Selecciona un mes y un día para ver la agenda.</p>
+        </div>
+
+    </div>
+
+    <script>
+        // Base de datos de los partidos (Incluí algunos de junio y la gran final de julio)
+        const baseDeDatosPartidos = [
+            { fecha: "11 de junio", local: "México", visitante: "Sudáfrica", estadio: "Estadio Azteca (CDMX)", hora: "15:00" },
+            { fecha: "11 de junio", local: "Rep. de Corea", visitante: "República Checa", estadio: "Estadio Akron (Guadalajara)", hora: "22:00" },
+            { fecha: "12 de junio", local: "Canadá", visitante: "Bosnia", estadio: "BMO Field (Toronto)", hora: "15:00" },
+            { fecha: "12 de junio", local: "Estados Unidos", visitante: "Paraguay", estadio: "SoFi Stadium (Los Ángeles)", hora: "21:00" },
+            { fecha: "18 de junio", local: "México", visitante: "Rep. de Corea", estadio: "Estadio Akron (Guadalajara)", hora: "21:00" },
+            { fecha: "24 de junio", local: "República Checa", visitante: "México", estadio: "Estadio Azteca (CDMX)", hora: "21:00" },
+            { fecha: "14 de julio", local: "Semifinalista 1", visitante: "Semifinalista 2", estadio: "AT&T Stadium (Dallas)", hora: "Por definir" },
+            { fecha: "15 de julio", local: "Semifinalista 3", visitante: "Semifinalista 4", estadio: "Mercedes-Benz Stadium (Atlanta)", hora: "Por definir" },
+            { fecha: "19 de julio", local: "Finalista 1", visitante: "Finalista 2", estadio: "MetLife Stadium (Nueva York/NJ)", hora: "Por definir" }
+        ];
+
+        // Función principal que filtra y muestra la información en pantalla
+        function buscarPartidos() {
+            // 1. Obtener los valores seleccionados de las dos cajitas
+            const mesSeleccionado = document.getElementById('selectMes').value;
+            const diaSeleccionado = document.getElementById('selectDia').value;
+            
+            // 2. Unir ambos valores para formar la fecha (Ej: "11 de junio")
+            const fechaBuscada = `${diaSeleccionado} de ${mesSeleccionado}`;
+            
+            const contenedor = document.getElementById('contenedorResultados');
+            contenedor.innerHTML = ""; // Limpiar resultados anteriores
+
+            // 3. Filtrar la base de datos buscando coincidencias exactas
+            const partidosFiltrados = baseDeDatosPartidos.filter(partido => partido.fecha === fechaBuscada);
+
+            // 4. Mostrar los resultados
+            if (partidosFiltrados.length > 0) {
+                partidosFiltrados.forEach(partido => {
+                    const tarjetaHtml = `
+                        <div class="partido-card">
+                            <div class="partido-equipos">${partido.local} vs. ${partido.visitante}</div>
+                            <div class="partido-detalles">
+                                📅 <strong>Fecha:</strong> ${partido.fecha} de 2026<br>
+                                📍 <strong>Sede:</strong> ${partido.estadio}<br>
+                                ⏰ <strong>Hora local:</strong> ${partido.hora}
+                            </div>
+                        </div>
+                    `;
+                    contenedor.innerHTML += tarjetaHtml;
+                });
+            } else {
+                // Si no hay partidos programados para ese día
+                contenedor.innerHTML = `
+                    <div class="no-resultados">
+                        No hay partidos programados para el ${fechaBuscada}.<br>
+                        Prueba con el "11 de junio" o el "19 de julio".
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
